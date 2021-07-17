@@ -1,19 +1,33 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Login from "./components/Login";
+import PrivateRoute from "./components/PrivateRoute";
+import BubblePage from "./components/BubblePage";
+
 import "./styles.scss";
 
 function App() {
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    console.log("You have been logged out!");
+    alert("You have logged out successfully!");
+  };
+
   return (
     <Router>
       <div className="App">
         <header>
           Color Picker Sprint Challenge
-          <a data-testid="logoutButton" href="#">logout</a>
+          <a data-testid="logoutButton" href="#" onClick={logout}>logout</a>
         </header> 
-
-        <Route exact path="/" component={Login} />
+    
+        <Switch>
+          <PrivateRoute exact path="/bubblepage" component={BubblePage} />
+          <Route path="/login" component={Login} />
+          <Route exact path="/" component={Login} />
+        </Switch>
       </div>
     </Router>
   );
