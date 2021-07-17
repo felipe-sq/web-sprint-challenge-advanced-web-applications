@@ -44,7 +44,7 @@ test("Executes setEditColor and toggleEdit property when color div is clicked", 
   userEvent.click(color)
   
   await waitFor(() => {
-  expect(setEditColor).toBeCalled()
-  expect(toggleEdit).toBeCalled();
-})
+    expect(setEditColor).toBeCalled()
+    expect(toggleEdit).toBeCalled();
+  })
 });
