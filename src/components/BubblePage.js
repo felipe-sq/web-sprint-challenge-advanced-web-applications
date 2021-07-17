@@ -10,14 +10,25 @@ const BubblePage = () => {
   const [editing, setEditing] = useState(false);
   
   useEffect(() => {
-    fetchColorService()
-      .then(res => {
-      setColors(res);
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }, []);
+    axiosWithAuth().get('/colors')
+    .then(res => {
+      setColors(res.data);
+    })
+    .catch(err => console.log(err));
+  }, [])
+
+  // useEffect(() => {
+  //   let mounted = true;
+  //   fetchColorService()
+  //     .then(res => {
+  //       if(mounted) {
+  //         setColors(res)
+  //       }
+  //     })
+  //   return () => mounted = false;
+  // }, []);
+  
+  // Commented code to remove fetchColorService as it was causing failing tests 
 
   const toggleEdit = (value) => {
     setEditing(value);

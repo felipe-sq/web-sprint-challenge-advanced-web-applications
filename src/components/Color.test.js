@@ -34,15 +34,17 @@ test("Executes handleDelete and toggleEdit property when the 'x' icon is clicked
   expect(handleDelete).toBeCalled()
   expect(toggleEdit).toBeCalled();});
 
-test("Executes setEditColor and toggleEdit property when color div is clicked", () => {
+test("Executes setEditColor and toggleEdit property when color div is clicked", async () => {
   const setEditColor = jest.fn();
   const toggleEdit = jest.fn();
 
   render (<Color color={sampleColor}/>)
-  const colorTest = screen.getByTestId("color")
+  const color = screen.getByTestId("color")
   
-  userEvent.click(colorTest)
+  userEvent.click(color)
   
+  await waitFor(() => {
   expect(setEditColor).toBeCalled()
   expect(toggleEdit).toBeCalled();
+})
 });
