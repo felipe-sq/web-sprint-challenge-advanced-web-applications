@@ -38,7 +38,7 @@ const Login = () => {
       .then(res => {
         localStorage.setItem('token', res.data.payload);
         console.log("login was successful!", res);
-        push("/bubbles");
+        push("/bubbles/i");
       })
       .catch(err => {
         setLoginForm({

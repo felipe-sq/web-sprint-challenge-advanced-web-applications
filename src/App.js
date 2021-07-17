@@ -9,10 +9,13 @@ import "./styles.scss";
 
 function App() {
 
+  const redirect = window.location.href;
+
   const logout = () => {
     localStorage.removeItem('token');
     console.log("You have been logged out!");
     alert("You have logged out successfully!");
+    return redirect;
   };
 
   return (
@@ -24,7 +27,7 @@ function App() {
         </header> 
     
         <Switch>
-          <PrivateRoute exact path="/bubbles" component={BubblePage} />
+          <PrivateRoute exact path="/bubbles/i" component={BubblePage} />
           <Route exact path="/" component={Login} />
         </Switch>
       </div>
