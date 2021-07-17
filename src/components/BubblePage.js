@@ -3,19 +3,49 @@ import React, { useEffect, useState } from "react";
 import Bubbles from "./Bubbles";
 import ColorList from "./ColorList";
 import fetchColorService from '../services/fetchColorService';
+import axiosWithAuth from "../helpers/axiosWithAuth";
 
 const BubblePage = () => {
   const [colors, setColors] = useState([]);
   const [editing, setEditing] = useState(false);
+  
+  useEffect(() => {
+    fetchColorService()
+      .then(res => {
+      setColors(res);
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, []);
 
   const toggleEdit = (value) => {
     setEditing(value);
   };
 
   const saveEdit = (editColor) => {
+    axiosWithAuth().put(`/colors/${editColor.id}`, editColor)
+      .then(res => {
+        console.log(res)
+        let editChosenColor = colors.findIndex(color => (color.id === editColor.id));
+        colors[editChosenColor] = editColor;
+        setColors([
+          ...colors
+        ])
+      })
+      .catch(err => {
+        console.log("there was an error with your edit request:", err)
+      })
   };
 
   const deleteColor = (colorToDelete) => {
+    axiosWithAuth().delete(`/colors/${colorToDelete.id}`)
+      .then(res => {
+        setColors(colors.filter(item => item.id !== colorToDelete.id))
+      })
+      .catch(err => {
+        console.log("oops, something went wrong:", err)
+      })
   };
 
   return (

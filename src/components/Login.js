@@ -1,44 +1,46 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import axiosWithAuth from "../helpers/axiosWithAuth";
 
 const Login = () => {
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
 
   const initialState = {
-    credentials: {
       username: '',
-      password: '',
-      // error: ''
-    },
-    error: ''
+      password: ''
   }
 
   const [ loginForm, setLoginForm ] = useState(initialState);
   const { push } = useHistory();
 
-  const error = loginForm.error;
-  // still needs some work...when error is called, the form values update with the error message along with the error message displaying correctly in the <p> tag
+  // const error = loginForm.error;
+  // initial code needs some work...when error is called, the form values update with the error message along with the error message displaying correctly in the <p> tag
+  // writing alternate code below for error message
 
-  //replace with error state
+  const [error, setError] = useState();
+
+  //replaced with error state
 
   const handleChange = e => {
     setLoginForm({
-      credentials: {
-        ...loginForm.credentials,
+        ...loginForm,
         [e.target.name]: e.target.value
-      }
     });
   }
 
   const loginSubmit = e => {
     e.preventDefault();
-    axios.post('http://localhost:5000/api/login', loginForm.credentials)
+
+    if (loginForm.username === '' || loginForm.password === '') {
+      setError("Username or Password not valid.")
+    }
+    axiosWithAuth().post('login', loginForm)
       .then(res => {
         localStorage.setItem('token', res.data.payload);
         console.log("login was successful!", res);
-        push("/bubbles/i");
+        push("/bubbles");
       })
       .catch(err => {
         setLoginForm({
@@ -62,7 +64,7 @@ const Login = () => {
             name="username"
             placeholder="username"
             id="username"
-            value={error}
+            value={loginForm.username}
             onChange={handleChange}
           />{' '}
           <input 
@@ -70,7 +72,7 @@ const Login = () => {
             name="password"
             placeholder="password"
             id="password"
-            value={error}
+            value={loginForm.password}
             onChange={handleChange}
           />{' '}
           <button id="submit">Submit</button>
