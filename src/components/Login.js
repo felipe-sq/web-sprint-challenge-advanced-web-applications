@@ -19,15 +19,8 @@ const Login = () => {
   const { push } = useHistory();
 
   const error = loginForm.error;
-
-  // const error = e => {
-  //   this.setState({
-  //     credentials: {
-  //       ...state.credentials,
-  //       error: e.target.value
-  //     }
-  //   })
-  // };
+  // still needs some work...when error is called, the form values update with the error message along with the error message displaying correctly in the <p> tag
+  
   //replace with error state
 
   const handleChange = e => {
@@ -45,10 +38,18 @@ const Login = () => {
       .then(res => {
         localStorage.setItem('token', res.data.payload);
         console.log("login was successful!", res);
-        // push("/protected");
+        push("/bubblepage");
       })
-      .catch(err => console.log("Error encountered!", err))
+      .catch(err => {
+        setLoginForm({
+          ...loginForm.error,
+          error: err.response.data.error
+        });
+        console.log("Error encountered!", err.response.data.error);
+      });
   };
+
+  console.log(loginForm);
 
   return (
     <div>
