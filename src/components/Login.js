@@ -20,7 +20,7 @@ const Login = () => {
 
   const error = loginForm.error;
   // still needs some work...when error is called, the form values update with the error message along with the error message displaying correctly in the <p> tag
-  
+
   //replace with error state
 
   const handleChange = e => {
@@ -38,7 +38,7 @@ const Login = () => {
       .then(res => {
         localStorage.setItem('token', res.data.payload);
         console.log("login was successful!", res);
-        push("/bubblepage");
+        push("/bubbles");
       })
       .catch(err => {
         setLoginForm({
