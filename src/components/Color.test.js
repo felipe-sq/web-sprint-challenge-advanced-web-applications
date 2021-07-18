@@ -4,6 +4,7 @@ import MutationObserver from 'mutationobserver-shim';
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Color from './Color';
+import EditMenu from './EditMenu';
 
 const sampleColor = {
   color: "limegreen",
@@ -27,12 +28,16 @@ test("Executes handleDelete and toggleEdit property when the 'x' icon is clicked
   const toggleEdit = jest.fn();
 
   render (<Color color={sampleColor}/>)
+  render (<EditMenu/>)
   
+  const editKey = screen.getByTestId("edit")
+  userEvent.click(editKey)
+
   const deleteKey = screen.getByTestId("delete")
   userEvent.click(deleteKey)
   
   expect(handleDelete).toBeCalled()
-  expect(toggleEdit).toBeCalled();});
+  expect(toggleEdit).toBeCalled();
 
 test("Executes setEditColor and toggleEdit property when color div is clicked", async () => {
   const setEditColor = jest.fn();

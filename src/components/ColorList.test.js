@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen} from "@testing-library/react";
 
 import ColorList from './ColorList';
+import EditMenu from './EditMenu';
 
 const sampleColor = [
   {
@@ -15,7 +16,7 @@ const sampleColor = [
 const emptyArray = [];
 
 test("Renders an empty list of colors without errors", () => {
-  render(<ColorList color={emptyArray} />)
+  render(<ColorList color={emptyArray} editing={null} toggleEdit={null} saveEdit={null} deleteColor={null}/>)
 });
 
 test("Renders a list of colors without errors", () => {
@@ -24,10 +25,14 @@ test("Renders a list of colors without errors", () => {
 
 test("Renders the EditForm when editing = true and does not render EditForm when editing = false", () => {
   const toggleEdit = jest.fn()
-  render(<ColorList color={sampleColor}/>);
+  const editing = jest.fn()
 
-  let editing = screen.queryByTestId("color");
-  userEvent.click(editing);
-  
+  render(<ColorList color={sampleColor} editing={editing} toggleEdit={toggleEdit}/>);
+
+  const colorToEdit = screen.getByTestId("color");
+  userEvent.click(colorToEdit);
+
+  // render(<EditMenu/>)  
   expect(toggleEdit).toBeCalled();
+  expect(editing).toBeCalled();
 });
