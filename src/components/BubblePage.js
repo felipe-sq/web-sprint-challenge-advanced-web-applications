@@ -26,25 +26,33 @@ const BubblePage = () => {
   const saveEdit = (editColor) => {
     axiosWithAuth().put(`/colors/${editColor.id}`, editColor)
       .then(res => {
-        console.log(res)
-        let editChosenColor = colors.findIndex(color => (color.id === editColor.id));
-        colors[editChosenColor] = editColor;
-        setColors([
-          ...colors
-        ])
+        console.log(res.data.id)
+
+        setColors(
+          colors.map(
+            item => {
+              if (item.id === Number(res.data.id)) {
+                return res.data;
+              } else {
+                return item
+              }
+            }
+          )
+        )
       })
       .catch(err => {
-        console.log("there was an error with your edit request:", err)
+        console.log("there was an error with your edit request:", {err})
       })
   };
 
   const deleteColor = (colorToDelete) => {
     axiosWithAuth().delete(`/colors/${colorToDelete.id}`)
       .then(res => {
-        setColors(colors.filter(item => item.id !== colorToDelete.id))
+        setColors(colors.filter(item => item.id !== 
+          Number(res.data)))
       })
       .catch(err => {
-        console.log("oops, something went wrong:", err)
+        console.log("oops, something went wrong:", {err})
       })
   };
 
